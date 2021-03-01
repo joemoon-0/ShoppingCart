@@ -94,7 +94,22 @@ inventory = [
 
 // Display inventory to UI
 function displayInventory() {
-  inventory.foreEach((item) => {});
+  inventory.foreEach((item) => {
+    /*  SAMPLE
+    let productDescription = document.createElement('p');
+    productDescription.textContent = product.description;
+    outerwrapper.append(productDescription);
+
+    let productName = document.createElement('p');
+    productName.textContent = `${product.sname}: $${product.price}`;
+    outerwrapper.append(productName);
+
+    let productImage = document.createElement('img');
+    productImage.src = product.picture;
+    productImage.alt = product.description
+    outerwrapper.append(productImage);
+*/
+  });
 }
 
 // Add: When the user selects an item, the shopping cart should add the item.
