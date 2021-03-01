@@ -40,3 +40,6 @@ Final Project
 */
 
 "use strict";
+
+// STORE ITEM INVENTORY
+inventory = {};
