@@ -41,5 +41,67 @@ Final Project
 
 "use strict";
 
+const outerwrapper = document.getElementById("outerwrapper");
+
 // STORE ITEM INVENTORY
-inventory = {};
+inventory = [
+  {
+    // ITEM:
+    productID: 001,
+    img_src: "",
+    img_alt: "",
+    name: "",
+    description: "",
+    price: 1,
+  },
+  {
+    // ITEM:
+    productID: 002,
+    img_src: "",
+    img_alt: "",
+    name: "",
+    description: "",
+    price: 1,
+  },
+  {
+    // ITEM:
+    productID: 003,
+    img_src: "",
+    img_alt: "",
+    name: "",
+    description: "",
+    price: 1,
+  },
+  {
+    // ITEM:
+    productID: 004,
+    img_src: "",
+    img_alt: "",
+    name: "",
+    description: "",
+    price: 1,
+  },
+  {
+    // ITEM:
+    productID: 005,
+    img_src: "",
+    img_alt: "",
+    name: "",
+    description: "",
+    price: 1,
+  },
+];
+
+// Display inventory to UI
+function displayInventory() {
+  inventory.foreEach((item) => {});
+}
+
+// Add: When the user selects an item, the shopping cart should add the item.
+function addItem() {}
+
+// Remove: Add functionality so that a user may also remove an item from the shopping cart.
+function removeItem() {}
+
+// Select: Adds and item to the shopping cart when clicked by the user
+function selectItem() {}
