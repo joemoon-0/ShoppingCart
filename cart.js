@@ -44,71 +44,73 @@ Final Project
 const outerwrapper = document.getElementById("outerwrapper");
 
 // STORE ITEM INVENTORY
-inventory = [
+const inventory = [
   {
-    // ITEM:
-    productID: 001,
-    img_src: "",
-    img_alt: "",
-    name: "",
-    description: "",
-    price: 1,
+    productID: 1,
+    img_src: "/images/bigbird.png",
+    name: "Big Bird",
+    description: "Today is brought to you by the letter 'B' for 'Buy Me!'",
+    price: 11.99,
   },
   {
-    // ITEM:
-    productID: 002,
-    img_src: "",
-    img_alt: "",
-    name: "",
-    description: "",
-    price: 1,
+    productID: 2,
+    img_src: "/images/cookiemonster.png",
+    name: "Cookie Monster",
+    description: "Cookie Cookie Cookie starts with C!",
+    price: 9.99,
   },
   {
-    // ITEM:
-    productID: 003,
-    img_src: "",
-    img_alt: "",
-    name: "",
-    description: "",
-    price: 1,
+    productID: 3,
+    img_src: "/images/elmo.png",
+    name: "Elmo",
+    description: "I'm not the tickling kind!",
+    price: 9.99,
   },
   {
-    // ITEM:
-    productID: 004,
-    img_src: "",
-    img_alt: "",
-    name: "",
-    description: "",
-    price: 1,
+    productID: 4,
+    img_src: "/images/ernie.png",
+    name: "Ernie",
+    description: "Umm... Hey Bert!",
+    price: 10.99,
   },
   {
-    // ITEM:
-    productID: 005,
-    img_src: "",
-    img_alt: "",
-    name: "",
-    description: "",
-    price: 1,
+    productID: 5,
+    img_src: "/images/grover.png",
+    name: "Grover",
+    description: "I'm just a cute, furry little monster!",
+    price: 8.99,
+  },
+  {
+    productID: 6,
+    img_src: "/images/oscar.png",
+    name: "Oscar the Grouch",
+    description: "I love trash!",
+    price: 12.99,
+  },
+  {
+    productID: 7,
+    img_src: "/images/thecount.png",
+    name: "The Count",
+    description: "One! Ha Ha Ha! Twoo! Ha! Ha! Ha!",
+    price: 11.99,
   },
 ];
 
 // Display inventory to UI
 function displayInventory() {
-  inventory.foreEach((item) => {
-    /*  SAMPLE
-    let productDescription = document.createElement('p');
-    productDescription.textContent = product.description;
+  inventory.forEach((item) => {
+    let productDescription = document.createElement("p");
+    productDescription.textContent = item.description;
     outerwrapper.append(productDescription);
 
-    let productName = document.createElement('p');
-    productName.textContent = `${product.sname}: $${product.price}`;
+    let productName = document.createElement("p");
+    productName.textContent = `${item.name}: $${item.price}`;
     outerwrapper.append(productName);
 
-    let productImage = document.createElement('img');
-    productImage.src = product.picture;
-    productImage.alt = product.description
+    let productImage = document.createElement("img");
+    productImage.src = item.img_src;
+    productImage.alt = item.description;
     outerwrapper.append(productImage);
-*/
   });
 }
 
@@ -120,3 +122,5 @@ function removeItem() {}
 
 // Select: Adds and item to the shopping cart when clicked by the user
 function selectItem() {}
+
+displayInventory();
