@@ -102,18 +102,19 @@ function displayInventory() {
     let itemDiv = document.createElement("div");
     itemDiv.className = "itemDisplay";
 
-    let productDescription = document.createElement("p");
-    productDescription.textContent = item.description;
-    itemDiv.append(productDescription);
+    let productImage = document.createElement("img");
+    productImage.className = "itemImg";
+    productImage.src = item.img_src;
+    productImage.alt = item.description;
+    itemDiv.append(productImage);
 
     let productName = document.createElement("p");
     productName.textContent = `${item.name}: $${item.price}`;
     itemDiv.append(productName);
 
-    let productImage = document.createElement("img");
-    productImage.src = item.img_src;
-    productImage.alt = item.description;
-    itemDiv.append(productImage);
+    let productDescription = document.createElement("p");
+    productDescription.textContent = item.description;
+    itemDiv.append(productDescription);
 
     displayWindow.append(itemDiv);
   });
