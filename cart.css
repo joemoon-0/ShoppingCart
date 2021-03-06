@@ -2,3 +2,44 @@ body {
   background-color: #000;
   color: #fff;
 }
+
+img {
+  width: 50%;
+}
+
+.itemDisplay {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+
+  border: 5px solid #fff;
+}
+
+#displayWindow {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+
+  border: 3px dashed #f00;
+}
+
+/*** MEDIA QUERIES ***/
+/* Display Styles for Tablets and Medium-sized Screens */
+@media (min-width: 640px) {
+  #displayWindow {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/*  Display Styles for Laptops/Desktop and Large-sized Screens */
+@media (min-width: 1024px) {
+  #displayWindow {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  #outerwrapper {
+    margin: 0 auto;
+    width: 80%;
+  }
+}

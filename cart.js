@@ -41,7 +41,7 @@ Final Project
 
 "use strict";
 
-const outerwrapper = document.getElementById("outerwrapper");
+const displayWindow = document.getElementById("displayWindow");
 
 // STORE ITEM INVENTORY
 const inventory = [
@@ -99,18 +99,23 @@ const inventory = [
 // Display inventory to UI
 function displayInventory() {
   inventory.forEach((item) => {
+    let itemDiv = document.createElement("div");
+    itemDiv.className = "itemDisplay";
+
     let productDescription = document.createElement("p");
     productDescription.textContent = item.description;
-    outerwrapper.append(productDescription);
+    itemDiv.append(productDescription);
 
     let productName = document.createElement("p");
     productName.textContent = `${item.name}: $${item.price}`;
-    outerwrapper.append(productName);
+    itemDiv.append(productName);
 
     let productImage = document.createElement("img");
     productImage.src = item.img_src;
     productImage.alt = item.description;
-    outerwrapper.append(productImage);
+    itemDiv.append(productImage);
+
+    displayWindow.append(itemDiv);
   });
 }
 
