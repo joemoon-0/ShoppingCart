@@ -41,54 +41,57 @@ Final Project
 
 "use strict";
 
-const displayWindow = document.getElementById("displayWindow");
+const inventoryWindow = document.getElementById("inventoryWindow");
+const displayCart = document.getElementById("shoppingCart");
+let inventoryItems; // nodelist of displayed inventory items
+let shoppingCart = []; // object array of items in shopping cart
 
 // STORE ITEM INVENTORY
 const inventory = [
   {
-    productID: 1,
+    productID: 0,
     img_src: "/images/bigbird.png",
     name: "Big Bird",
     description: "Today is brought to you by the letter 'B' for 'Buy Me!'",
     price: 11.99,
   },
   {
-    productID: 2,
+    productID: 1,
     img_src: "/images/cookiemonster.png",
     name: "Cookie Monster",
     description: "Cookie Cookie Cookie starts with C!",
     price: 9.99,
   },
   {
-    productID: 3,
+    productID: 2,
     img_src: "/images/elmo.png",
     name: "Elmo",
     description: "I'm not the tickling kind!",
     price: 9.99,
   },
   {
-    productID: 4,
+    productID: 3,
     img_src: "/images/ernie.png",
     name: "Ernie",
     description: "Umm... Hey Bert!",
     price: 10.99,
   },
   {
-    productID: 5,
+    productID: 4,
     img_src: "/images/grover.png",
     name: "Grover",
     description: "I'm just a cute, furry little monster!",
     price: 8.99,
   },
   {
-    productID: 6,
+    productID: 5,
     img_src: "/images/oscar.png",
     name: "Oscar the Grouch",
     description: "I love trash!",
     price: 12.99,
   },
   {
-    productID: 7,
+    productID: 6,
     img_src: "/images/thecount.png",
     name: "The Count",
     description: "One! Ha Ha Ha! Twoo! Ha! Ha! Ha!",
@@ -100,6 +103,7 @@ const inventory = [
 function displayInventory() {
   inventory.forEach((item) => {
     let itemDiv = document.createElement("div");
+    itemDiv.id = item.productID; // assigned for referencing
     itemDiv.className = "itemDisplay";
 
     let productImage = document.createElement("img");
@@ -110,23 +114,122 @@ function displayInventory() {
 
     let productName = document.createElement("p");
     productName.textContent = `${item.name}: $${item.price}`;
+    productName.className = "itemName";
     itemDiv.append(productName);
 
     let productDescription = document.createElement("p");
     productDescription.textContent = item.description;
     itemDiv.append(productDescription);
 
-    displayWindow.append(itemDiv);
+    inventoryWindow.append(itemDiv);
   });
+
+  inventoryItems = document.querySelectorAll(".itemDisplay");
 }
 
 // Add: When the user selects an item, the shopping cart should add the item.
-function addItem() {}
+function addItem(productID) {
+  if (!inCart(productID)) {
+    const selectedItem = inventory[productID]; // item reference call
+
+    // ITEM INFORMATION DISPLAY
+    let itemDiv = document.createElement("div");
+    itemDiv.id = selectedItem.productID;
+    itemDiv.className = "cartDisplay";
+
+    let selectedImage = document.createElement("img");
+    selectedImage.src = selectedItem.img_src;
+    selectedImage.alt = selectedItem.description;
+    itemDiv.append(selectedImage);
+
+    let selectedName = document.createElement("p");
+    selectedName.className = "mobileDisp";
+    selectedName.textContent = selectedItem.name;
+    itemDiv.append(selectedName);
+
+    let selectedPrice = document.createElement("p");
+    selectedPrice.textContent = `$${selectedItem.price}`;
+    itemDiv.append(selectedPrice);
+
+    // ITEM QUANITY SELECTION
+    let itemQuantity = document.createElement("div");
+    itemQuantity.className = "cartDisplay";
+
+    let itemLabel = document.createElement("label");
+    itemLabel.htmlFor = `product${productID}`;
+    itemLabel.textContent = "Quantity: ";
+    itemQuantity.append(itemLabel);
+
+    let itemQuant = document.createElement("input");
+    itemQuant.id = `product${productID}`;
+    itemQuant.name = `product${productID}`;
+    itemQuant.type = "number";
+    itemQuant.min = 0;
+    itemQuant.value = 1;
+    itemQuantity.append(itemQuant);
+
+    // ITEM TOTAL CALCULATION
+    let itemTotal = document.createElement("div");
+    itemTotal.id = `product${productID}price`;
+    itemTotal.className = "cartDisplay";
+
+    let itemTotalPrice = document.createElement("p");
+    itemTotalPrice.textContent = `$${selectedItem.price * itemQuant.value}`;
+    itemTotal.append(itemTotalPrice);
+
+    cartWindow.append(itemDiv);
+    cartWindow.append(itemQuantity);
+    cartWindow.append(itemTotal);
+
+    // Push shopping cart meta data to shoppingCart array
+    const metadata = {
+      productID: productID,
+      itemPrice: selectedItem.price,
+      itemQuantity: itemQuant.value,
+    };
+    shoppingCart.push(metadata);
+  } else {
+    // Item already in cart.  Get index of reselected item from shoppingCart array
+    const cartIndex = shoppingCart.findIndex((meta) => {
+      return meta.productID.indexOf(productID) > -1;
+    });
+
+    // Increment quantity and price
+    let cartQuantity = document.getElementById(`product${productID}`);
+    let newQuantity = +cartQuantity.value + 1;
+    cartQuantity.value = newQuantity;
+
+    let cartPrice = document.getElementById(`product${productID}price`);
+    let newPrice = cartQuantity.value * shoppingCart[cartIndex].itemPrice;
+    cartPrice.textContent = newPrice;
+
+    // Update meta data
+    shoppingCart[cartIndex].itemPrice = newPrice;
+    shoppingCart[cartIndex].itemQuantity = newQuantity;
+  }
+}
+
+// inCart: Checks if an inventory item is already in the shopping cart
+function inCart(productID) {
+  return shoppingCart.some((cartItemID) => {
+    return cartItemID.productID == productID;
+  });
+}
 
 // Remove: Add functionality so that a user may also remove an item from the shopping cart.
 function removeItem() {}
 
-// Select: Adds and item to the shopping cart when clicked by the user
-function selectItem() {}
-
 displayInventory();
+
+// EVENT LISTENERS
+
+inventoryItems.forEach((item) => {
+  item.addEventListener(
+    "click",
+    () => {
+      addItem(item.id);
+    },
+
+    false
+  );
+});

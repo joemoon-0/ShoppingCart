@@ -9,16 +9,29 @@
   </head>
   <body>
     <nav>
-      <div><p>Items: <span id="itemsNum"></span></p></div>
-      <div class="mobileDisp"><p>Subtotal: <span id="subtotal"></span></p></div>
-      <div class="mobileDisp"><p>Delivery: <span id="deliveryfee"></span></p></div>
-      <div><p>Total: <span id="total"></span></p></div>
+      <div>
+        <p>Items: <span id="itemsNum"></span></p>
+      </div>
+      <div class="mobileDisp">
+        <p>Subtotal: <span id="subtotal"></span></p>
+      </div>
+      <div class="mobileDisp">
+        <p>Delivery: <span id="deliveryfee"></span></p>
+      </div>
+      <div>
+        <p>Total: <span id="total"></span></p>
+      </div>
     </nav>
+
     <main>
-    <div id="outerwrapper">
-      <di id="displayWindow"></div>
-    </div>
-  </main>
+      <div id="outerwrapper">
+        <!-- INVENTORY DISPLAY AREA -->
+        <div id="inventoryWindow"></div>
+
+        <!-- SELECTED ITEM AREA -->
+        <div id="cartWindow"></div>
+      </div>
+    </main>
     <script src="cart.js"></script>
   </body>
 </html>
