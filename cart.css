@@ -25,7 +25,7 @@ nav p {
   margin: 0;
 }
 
-.mobileDisp {
+.cartDisplay > .mobileDisp {
   display: none;
 }
 
@@ -58,10 +58,6 @@ nav p {
 }
 
 #cartWindow {
-  display: grid;
-  grid-template-columns: 3fr 1fr 1fr;
-  grid-template-rows: auto;
-
   margin-top: 0.5em;
   border: 3px dashed #0f0;
 }
@@ -71,17 +67,27 @@ nav p {
 }
 
 .cartDisplay {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: space-evenly;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: auto;
+  justify-items: center;
   align-items: center;
+}
+
+.inputField {
+  margin-left: 1em;
+  width: 30%;
+}
+
+.removeButtons {
+  height: 50%;
+  width: 70%;
 }
 
 /*** MEDIA QUERIES ***/
 /* Display Styles for Tablets and Medium-sized Screens */
 @media (min-width: 640px) {
-  .mobileDisp {
+  .cartDisplay > .mobileDisp {
     display: block;
   }
 
