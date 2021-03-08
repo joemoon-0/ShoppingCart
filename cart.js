@@ -138,7 +138,7 @@ function addItem(productID) {
 
     // DIV that holds each item (row) in shopping cart
     let itemDiv = document.createElement("div");
-    itemDiv.id = selectedItem.productID;
+    itemDiv.id = `cart${selectedItem.productID}`;
     itemDiv.className = "cartDisplay"; // 5 column grid
 
     // Image - 1fr
@@ -170,7 +170,7 @@ function addItem(productID) {
     itemQuant.id = `product${productID}`;
     itemQuant.name = `product${productID}`;
     itemQuant.type = "number";
-    itemQuant.min = 0;
+    itemQuant.min = 1;
     itemQuant.value = 1;
     quantitySpan.append(itemQuant);
     itemDiv.append(quantitySpan);
@@ -184,9 +184,9 @@ function addItem(productID) {
     // Total Calculation - 1fr
     let itemTotalPrice = document.createElement("p");
     itemTotalPrice.id = `product${productID}price`;
-    itemTotalPrice.textContent = `$${(
+    itemTotalPrice.textContent = `$${currency(
       selectedItem.price * itemQuant.value
-    ).toFixed(2)}`;
+    )}`;
     itemDiv.append(itemTotalPrice);
 
     cartWindow.append(itemDiv);
@@ -216,7 +216,6 @@ function addItem(productID) {
 
     // Update meta data
     shoppingCart[cartIndex].itemQuantity = newQuantity;
-
     updateQuantity(productID, newQuantity);
   }
 }
@@ -243,7 +242,7 @@ function updatePrice(productID, cartIndex) {
   const cartPrice = document.getElementById(`product${productID}price`);
   const updatedQuantity = shoppingCart[cartIndex].itemQuantity;
   const itemPrice = shoppingCart[cartIndex].itemPrice;
-  cartPrice.textContent = `$${updatedQuantity * itemPrice}`;
+  cartPrice.textContent = `$${currency(updatedQuantity * itemPrice)}`;
 
   // Output Number of Items
   const calcItemNum = shoppingCart.reduce((sum, itemSum) => {
@@ -256,12 +255,25 @@ function updatePrice(productID, cartIndex) {
     return sum + itemSum.itemQuantity * itemSum.itemPrice;
   }, 0);
 
-  subtotal.textContent = `$${calcSubtotal.toFixed(2)}`;
+  subtotal.textContent = `$${currency(calcSubtotal)}`;
 }
 
-// Remove: Add functionality so that a user may also remove an item from the shopping cart.
+// removeItem: allows items to be removed from the shopping cart.
 function removeItem(productID) {
-  console.log(productID);
+  const removeTarget = document.getElementById(`cart${productID}`);
+  updateQuantity(productID, 0);
+  removeTarget.remove();
+
+  // remove item entry from shoppingCart array
+  let removeIndex = shoppingCart.findIndex((item) => {
+    return item.productID.indexOf(`${productID}`) > -1;
+  });
+  shoppingCart.splice(removeIndex, 1);
+}
+
+// currency: display a value amount to two decimals
+function currency(amount) {
+  return (Math.round(amount * 100) / 100).toFixed(2);
 }
 
 displayInventory();
@@ -294,7 +306,7 @@ cartWindow.addEventListener(
   "click",
   (e) => {
     if (e.target.classList.contains("removeButtons")) {
-      removeItem(e.target.parentElement.id);
+      removeItem(e.target.id.slice(-1));
     }
   },
   false
