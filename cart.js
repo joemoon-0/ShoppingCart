@@ -143,7 +143,7 @@ function loadUI() {
     productImage.alt = item.description;
     itemDiv.append(productImage);
 
-    let productName = document.createElement("p");
+    let productName = document.createElement("h3");
     productName.textContent = `${item.name}: $${item.price}`;
     productName.className = "itemName";
     itemDiv.append(productName);
@@ -160,6 +160,7 @@ function loadUI() {
 
 // Add: When the user selects an item, the shopping cart should add the item.
 function addItem(productID) {
+  cartWindow.classList.remove("hideWindow");
   if (!inCart(productID)) {
     const selectedItem = inventory[productID]; // item reference call
 
@@ -175,13 +176,13 @@ function addItem(productID) {
     itemDiv.append(selectedImage);
 
     // Description - 1fr
-    let selectedName = document.createElement("p");
+    let selectedName = document.createElement("h3");
     selectedName.className = "mobileDisp";
     selectedName.textContent = selectedItem.name;
     itemDiv.append(selectedName);
 
     // Price - 1fr
-    let selectedPrice = document.createElement("p");
+    let selectedPrice = document.createElement("h3");
     selectedPrice.textContent = `$${selectedItem.price}`;
     itemDiv.append(selectedPrice);
 
@@ -299,6 +300,10 @@ function removeItem(productID) {
     return item.productID.indexOf(`${productID}`) > -1;
   });
   shoppingCart.splice(removeIndex, 1);
+
+  if (shoppingCart.length == 0) {
+    cartWindow.classList.add("hideWindow");
+  }
 }
 
 // currency: display a value amount to two decimals
@@ -308,7 +313,7 @@ function currency(amount) {
 
 // delivery: factors in delivery fee into total price
 function delivery(subtotal) {
-  total.textContent = `${currency(+subtotal + +deliveryList.value)}`;
+  total.textContent = `$${currency(+subtotal + +deliveryList.value)}`;
 }
 
 loadUI();
