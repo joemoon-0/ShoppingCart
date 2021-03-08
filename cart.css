@@ -5,11 +5,15 @@ body {
 }
 
 nav {
-  display: flex;
+  /* display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: space-evenly;
-  align-items: center;
+  align-items: center; */
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  justify-items: center;
+  align-content: center;
 
   background-color: lightcoral;
   font-size: 1.5em;
@@ -25,8 +29,9 @@ nav p {
   margin: 0;
 }
 
-.cartDisplay > .mobileDisp {
-  display: none;
+#deliveryList {
+  font-size: 1.1rem;
+  width: 50%;
 }
 
 .itemImg {
@@ -74,6 +79,14 @@ nav p {
   align-items: center;
 }
 
+.cartDisplay > .mobileDisp {
+  display: none;
+}
+
+.mobileLabel {
+  display: none;
+}
+
 .inputField {
   font-size: 1.3em;
   margin-left: 1em;
@@ -81,15 +94,24 @@ nav p {
 }
 
 .removeButtons {
+  background-color: lightcoral;
   height: 50%;
-  width: 70%;
+  width: 100%;
 }
 
 /*** MEDIA QUERIES ***/
 /* Display Styles for Tablets and Medium-sized Screens */
 @media (min-width: 640px) {
+  nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
   .cartDisplay > .mobileDisp {
     display: block;
+  }
+
+  .mobileLabel {
+    display: inline;
   }
 
   .itemImg {
@@ -111,6 +133,11 @@ nav p {
 
 /*  Display Styles for Laptops/Desktop and Large-sized Screens */
 @media (min-width: 1024px) {
+  #deliveryList {
+    font-size: 1.1rem;
+    width: 60%;
+  }
+
   #inventoryWindow {
     grid-template-columns: repeat(4, 1fr);
   }

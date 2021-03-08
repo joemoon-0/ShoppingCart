@@ -43,12 +43,13 @@ Final Project
 
 const itemsNum = document.getElementById("itemsNum");
 const subtotal = document.getElementById("subtotal");
-const deliveryfee = document.getElementById("deliveryfee");
+const deliveryMode = document.getElementById("deliveryMode");
 const total = document.getElementById("total");
 const inventoryWindow = document.getElementById("inventoryWindow");
 const cartWindow = document.getElementById("cartWindow");
 let inventoryItems; // nodelist of displayed inventory items
 let shoppingCart = []; // object array of items in shopping cart
+let runningSubtotal = 0;
 
 // STORE ITEM INVENTORY
 const inventory = [
@@ -103,8 +104,34 @@ const inventory = [
   },
 ];
 
-// Display inventory to UI
-function displayInventory() {
+// DELIVERY OPTIONS
+const deliveryOptions = [
+  { name: "In-store Pickup", price: 0.0 },
+  { name: "Standard (7 - 10 days)", price: 3.99 },
+  { name: "Express (3 - 5 days)", price: 6.99 },
+  { name: "Overnight", price: 13.99 },
+];
+
+// Load UI features
+function loadUI() {
+  // Load Delivery Options
+  let deliveryLabel = document.createElement("label");
+  deliveryLabel.htmlFor = "deliveryList";
+  deliveryLabel.textContent = "Delivery: ";
+  // deliveryLabel.className = "mobileLabel";
+  deliveryMode.append(deliveryLabel);
+
+  const deliverySelect = document.createElement("select");
+  deliverySelect.id = "deliveryList";
+  deliveryOptions.forEach((delOption) => {
+    let newOption = document.createElement("option");
+    newOption.value = delOption.price;
+    newOption.textContent = `${delOption.name} - $${delOption.price}`;
+    deliverySelect.append(newOption);
+  });
+  deliveryMode.append(deliverySelect);
+
+  // Display Inventory
   inventory.forEach((item) => {
     let itemDiv = document.createElement("div");
     itemDiv.id = item.productID; // assigned for referencing
@@ -163,6 +190,7 @@ function addItem(productID) {
     let itemLabel = document.createElement("label");
     itemLabel.htmlFor = `product${productID}`;
     itemLabel.textContent = "Quantity: ";
+    itemLabel.className = "mobileLabel";
     quantitySpan.append(itemLabel);
 
     let itemQuant = document.createElement("input");
@@ -212,7 +240,7 @@ function addItem(productID) {
 
     let cartPrice = document.getElementById(`product${productID}price`);
     let newPrice = newQuantity * shoppingCart[cartIndex].itemPrice;
-    cartPrice.textContent = `$${newPrice.toFixed(2)}`;
+    cartPrice.textContent = `$${currency(newPrice)}`;
 
     // Update meta data
     shoppingCart[cartIndex].itemQuantity = newQuantity;
@@ -255,7 +283,9 @@ function updatePrice(productID, cartIndex) {
     return sum + itemSum.itemQuantity * itemSum.itemPrice;
   }, 0);
 
-  subtotal.textContent = `$${currency(calcSubtotal)}`;
+  runningSubtotal = currency(calcSubtotal);
+  subtotal.textContent = `$${runningSubtotal}`;
+  delivery(runningSubtotal);
 }
 
 // removeItem: allows items to be removed from the shopping cart.
@@ -276,7 +306,12 @@ function currency(amount) {
   return (Math.round(amount * 100) / 100).toFixed(2);
 }
 
-displayInventory();
+// delivery: factors in delivery fee into total price
+function delivery(subtotal) {
+  total.textContent = `${currency(+subtotal + +deliveryList.value)}`;
+}
+
+loadUI();
 
 // ***** EVENT LISTENERS *****
 // Listens for actions on the display window
@@ -307,6 +342,17 @@ cartWindow.addEventListener(
   (e) => {
     if (e.target.classList.contains("removeButtons")) {
       removeItem(e.target.id.slice(-1));
+    }
+  },
+  false
+);
+
+// Listens for changes in delivery selection
+deliveryMode.addEventListener(
+  "change",
+  (e) => {
+    if (e.target.id == "deliveryList") {
+      delivery(+runningSubtotal);
     }
   },
   false
