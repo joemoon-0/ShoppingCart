@@ -1,16 +1,17 @@
 /* 
-Joe Moon 03/23/21
+Joe Moon 03/27/21
 WEB 124 Final Project - Shopping Cart
 */
 
 "use strict";
 
-const itemsNum = document.getElementById("itemsNum");
-const subtotal = document.getElementById("subtotal");
-const deliveryMode = document.getElementById("deliveryMode");
-const total = document.getElementById("total");
+const itemsNum = document.getElementById("itemsNum"); // status bar
+const subtotal = document.getElementById("subtotal"); // status bar
+const deliveryMode = document.getElementById("deliveryMode"); // status bar
+const total = document.getElementById("total"); // status bar
 const inventoryWindow = document.getElementById("inventoryWindow");
-const cartWindow = document.getElementById("cartWindow");
+const cartWindow = document.getElementById("cartWindow"); // shopping cart
+const cartTitle = document.getElementById("cartTitle");
 let inventoryItems; // nodelist of displayed inventory items
 let shoppingCart = []; // object array of items in shopping cart
 let runningSubtotal = 0;
@@ -19,49 +20,49 @@ let runningSubtotal = 0;
 const inventory = [
   {
     productID: 0,
-    img_src: "/images/bigbird.png",
+    img_src: "images/bigbird.png",
     name: "Big Bird",
     description: "Today is brought to you by the letter 'B' for 'Buy Me!'",
     price: 11.99,
   },
   {
     productID: 1,
-    img_src: "/images/cookiemonster.png",
+    img_src: "images/cookiemonster.png",
     name: "Cookie Monster",
     description: "Cookie Cookie Cookie starts with C!",
     price: 9.99,
   },
   {
     productID: 2,
-    img_src: "/images/elmo.png",
+    img_src: "images/elmo.png",
     name: "Elmo",
     description: "I'm not the tickling kind!",
     price: 9.99,
   },
   {
     productID: 3,
-    img_src: "/images/ernie.png",
+    img_src: "images/ernie.png",
     name: "Ernie",
     description: "Umm... Hey Bert!",
     price: 10.99,
   },
   {
     productID: 4,
-    img_src: "/images/grover.png",
+    img_src: "images/grover.png",
     name: "Grover",
     description: "I'm just a cute, furry little monster!",
     price: 8.99,
   },
   {
     productID: 5,
-    img_src: "/images/oscar.png",
+    img_src: "images/oscar.png",
     name: "Oscar the Grouch",
     description: "I love trash!",
     price: 12.99,
   },
   {
     productID: 6,
-    img_src: "/images/thecount.png",
+    img_src: "images/thecount.png",
     name: "The Count",
     description: "One! Ha Ha Ha! Twoo! Ha! Ha! Ha!",
     price: 11.99,
@@ -76,13 +77,12 @@ const deliveryOptions = [
   { name: "Overnight", price: 13.99 },
 ];
 
-// Load UI features
+// loadUI: Display shopping cart UI
 function loadUI() {
   // Load Delivery Options
   let deliveryLabel = document.createElement("label");
   deliveryLabel.htmlFor = "deliveryList";
   deliveryLabel.textContent = "Delivery: ";
-  // deliveryLabel.className = "mobileLabel";
   deliveryMode.append(deliveryLabel);
 
   const deliverySelect = document.createElement("select");
@@ -101,17 +101,20 @@ function loadUI() {
     itemDiv.id = item.productID; // assigned for referencing
     itemDiv.className = "itemDisplay";
 
+    // Item image
     let productImage = document.createElement("img");
     productImage.className = "itemImg";
     productImage.src = item.img_src;
     productImage.alt = item.description;
     itemDiv.append(productImage);
 
+    // Item details
     let productName = document.createElement("h3");
     productName.textContent = `${item.name}: $${item.price}`;
     productName.className = "itemName";
     itemDiv.append(productName);
 
+    // Item description
     let productDescription = document.createElement("p");
     productDescription.textContent = item.description;
     itemDiv.append(productDescription);
@@ -119,16 +122,19 @@ function loadUI() {
     inventoryWindow.append(itemDiv);
   });
 
+  // Add all items to 'inventoryItems' nodeList for referencing
   inventoryItems = document.querySelectorAll(".itemDisplay");
 }
 
-// Add: When the user selects an item, the shopping cart should add the item.
+// addItem: Add the user selected item to the shopping cart
 function addItem(productID) {
-  cartWindow.classList.remove("hideWindow");
+  cartWindow.classList.remove("hideWindow"); // Show shopping cart
+  cartTitle.classList.remove("hideWindow");
   if (!inCart(productID)) {
+    // *** CASE 1: Selected Item is not in the cart ***
     const selectedItem = inventory[productID]; // item reference call
 
-    // DIV that holds each item (row) in shopping cart
+    // DIV that holds each item (row) in the shopping cart
     let itemDiv = document.createElement("div");
     itemDiv.id = `cart${selectedItem.productID}`;
     itemDiv.className = "cartDisplay"; // 5 column grid
@@ -185,6 +191,7 @@ function addItem(productID) {
     cartWindow.append(itemDiv);
 
     // Push shopping cart meta data to shoppingCart array
+    // This metadata tracks the quantity of an item and whether or not it has been removed from the cart.
     const metadata = {
       productID: productID,
       itemPrice: selectedItem.price, // fixed
@@ -193,7 +200,9 @@ function addItem(productID) {
     shoppingCart.push(metadata);
     updateQuantity(productID, itemQuant.value);
   } else {
-    // Item already in cart.  Get index of reselected item from shoppingCart array
+    // *** CASE 2: Item already is already in the cart ***
+
+    // Get index of reselected item from shoppingCart array
     const cartIndex = shoppingCart.findIndex((meta) => {
       return meta.productID.indexOf(productID) > -1;
     });
@@ -266,7 +275,8 @@ function removeItem(productID) {
   shoppingCart.splice(removeIndex, 1);
 
   if (shoppingCart.length == 0) {
-    cartWindow.classList.add("hideWindow");
+    cartWindow.classList.add("hideWindow"); // hide empty shopping cart
+    cartTitle.classList.add("hideWindow");
   }
 }
 
